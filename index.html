@@ -1,0 +1,398 @@
+tats-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-card);
+  }
+
+  .stats-table thead {
+    background: var(--bg-card-hover);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .stats-table th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--col-yellow);
+    font-size: 12px;
+  }
+
+  .stats-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+
+  .stats-table tbody tr:hover {
+    background: var(--bg-card-hover);
+  }
+
+  .stats-table tbody tr.benched {
+    opacity: 0.6;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header-inner {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .controls {
+      flex-direction: column;
+    }
+    .search-box { min-width: 100%; }
+    .players-grid {
+      grid-template-columns: 1fr;
+    }
+    .extra-stats {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-title">
+      <div>
+        <h1>Colombia Internacional</h1>
+        <div class="subtitle">World Cup 2026 Player Tracker — 26 Players Monitored</div>
+      </div>
+    </div>
+    <div class="last-updated" id="lastUpdated">
+      Last updated: Loading...
+    </div>
+  </div>
+</div>
+
+<div class="controls">
+  <input class="search-box" type="text" placeholder="Search player, team, or league..." id="searchBox" />
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="G">GK</button>
+  <button class="filter-btn" data-filter="D">DEF</button>
+  <button class="filter-btn" data-filter="M">MID</button>
+  <button class="filter-btn" data-filter="F">FWD</button>
+  <button class="filter-btn" data-filter="injured">Injured</button>
+  <select class="sort-select" id="sortSelect">
+    <option value="rating">Sort: Rating</option>
+    <option value="goals">Sort: Goals</option>
+    <option value="assists">Sort: Assists</option>ses": 0, "successfulDribbles": 56, "accuratePasses": 1455, "totalPasses": 1700, "accuratePassesPercentage": 85.588235294118, "bigChancesCreated": 12, "bigChancesMissed": 8, "expectedGoals": 7.2654, "expectedAssists": 5.1203, "cleanSheet": 0, "saves": 0, "goalsConceded": 0, "penaltySave": 0, "recentMatches": [{"date": "2026-03-22", "homeTeam": "Al-Shabab", "awayTeam": "Al-Nassr", "homeScore": 3, "awayScore": 1, "tournament": "Saudi Arabia Pro League", "playerRating": 8.3, "playerMinutes": 66, "playerGoals": 1, "playerAssists": 1, "playerExpectedGoals": 0.54, "started": true}, {"date": "2026-03-15", "homeTeam": "Al-Wehda", "awayTeam": "Al-Nassr", "homeScore": 2, "awayScore": 2, "tournament": "Saudi Arabia Pro League", "playerRating": 7.8, "playerMinutes": 82, "playerGoals": 1, "playerAssists": 1, "playerExpectedGoals": 0.71, "started": true}, {"date": "2026-03-08", "homeTeam": "Al-Nassr", "awayTeam": "Al-Ittihad", "homeScore": 2, "awayScore": 3, "tournament": "Saudi Arabia Pro League", "playerRating": 7.3, "playerMinutes": 45, "playerGoals": 1, "playerAssists": 0, "playerExpectedGoals": 0.34, "started": true}, {"date": "2026-03-01", "homeTeam": "Al-Nassr", "awayTeam": "Al-Taawoun", "homeScore": 3, "awayScore": 1, "tournament": "Saudi Arabia Pro League", "playerRating": 8.0, "playerMinutes": 70, "playerGoals": 2, "playerAssists": 1, "playerExpectedGoals": 1.02, "started": true}], "d30": {"games": 4, "goals": 5, "assists": 3, "minutes": 263, "rating": 7.85, "matches": [{"date": "2026-03-22", "homeTeam": "Al-Shabab", "awayTeam": "Al-Nassr", "homeScore": 3, "awayScore": 1, "tournament": "Saudi Arabia Pro League", "playerRating": 8.3, "playerMinutes": 66, "playerGoals": 1, "playerAssists": 1, "playerExpectedGoals": 0.54, "started": true}, {"date": "2026-03-15", "homeTeam": "Al-Wehda", "awayTeam": "Al-Nassr", "homeScore": 2, "awayScore": 2, "tournament": "Saudi Arabia Pro League", "playerRating": 7.8, "playerMinutes": 82, "playerGoals": 1, "playerAssists": 1, "playerExpectedGoals": 0.71, "started": true}, {"date": "2026-03-08", "homeTeam": "Al-Nassr", "awayTeam": "Al-Ittihad", "homeScore": 2, "awayScore": 3, "tournament": "Saudi Arabia Pro League", "playerRating": 7.3, "playerMinutes": 45, "playerGoals": 1, "playerAssists": 0, "playerExpectedGoals": 0.34, "started": true}, {"date": "2026-03-01", "homeTeam": "Al-Nassr", "awayTeam": "Al-Taawoun", "homeScore": 3, "awayScore": 1, "tournament": "Saudi Arabia Pro League", "playerRating": 8.0, "playerMinutes": 70, "playerGoals": 2, "playerAssists": 1, "playerExpectedGoals": 1.02, "started": true}]}, "d180": {"games": 16, "goals": 18, "assists": 13, "minutes": 1090, "rating": 7.62}}]; const CURRENT_TIME = '2026-03-22T08:00:00'; function formatDate(dateStr) { const d = new Date(dateStr); return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); } function updateLastUpdated() { const el = document.getElementById('lastUpdated'); const now = new Date(); el.innerHTML = `Last updated: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`; } function getPlayerStats(player, period = 'season') { const stats = period === 'last30' ? player.d30 || player : player; return {ccuratePassesPercentage": 85.714285714286, "bigChancesCreated": 4, "bigChancesMissed": 2, "expectedGoals": 2.1033, "expectedAssists": 1.5012, "cleanSheet": 1, "saves": 0, "goalsConceded": 0, "penaltySave": 0, "recentMatches": [{"date": "2026-03-22", "homeTeam": "Tigres", "awayTeam": "Monterrey", "homeScore": 2, "awayScore": 1, "tournament": "Liga MX, Clausura", "playerRating": 6.8, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.18, "started": true}, {"date": "2026-03-15", "homeTeam": "Monterrey", "awayTeam": "Tigres", "homeScore": 2, "awayScore": 0, "tournament": "Liga MX, Clausura", "playerRating": 7.4, "playerMinutes": 45, "playerGoals": 1, "playerAssists": 0, "playerExpectedGoals": 0.32, "started": true}, {"date": "2026-03-08", "homeTeam": "Guadalajara", "awayTeam": "Monterrey", "homeScore": 1, "awayScore": 3, "tournament": "Liga MX, Clausura", "playerRating": 7.1, "playerMinutes": 67, "playerGoals": 1, "playerAssists": 1, "playerExpectedGoals": 0.44, "started": true}, {"date": "2026-03-01", "homeTeam": "Monterrey", "awayTeam": "Santos", "homeScore": 1, "awayScore": 0, "tournament": "Liga MX, Clausura", "playerRating": 6.5, "playerMinutes": 88, "playerGoals": 0, "playerAssists": 1, "playerExpectedGoals": 0.12, "started": true}], "d30": {"games": 4, "goals": 2, "assists": 2, "minutes": 290, "rating": 7.0, "matches": [{"date": "2026-03-22", "homeTeam": "Tigres", "awayTeam": "Monterrey", "homeScore": 2, "awayScore": 1, "tournament": "Liga MX, Clausura", "playerRating": 6.8, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.18, "started": true}, {"date": "2026-03-15", "homeTeam": "Monterrey", "awayTeam": "Tigres", "homeScore": 2, "awayScore": 0, "tournament": "Liga MX, Clausura", "playerRating": 7.4, "playerMinutes": 45, "playerGoals": 1, "playerAssists": 0, "playerExpectedGoals": 0.32, "started": true}, {"date": "2026-03-08", "homeTeam": "Guadalajara", "awayTeam": "Monterrey", "homeScore": 1, "awayScore": 3, "tournament": "Liga MX, Clausura", "playerRating": 7.1, "playerMinutes": 67, "playerGoals": 1, "playerAssists": 1, "playerExpectedGoals": 0.44, "started": true}, {"date": "2026-03-01", "homeTeam": "Monterrey", "awayTeam": "Santos", "homeScore": 1, "awayScore": 0, "tournament": "Liga MX, Clausura", "playerRating": 6.5, "playerMinutes": 88, "playerGoals": 0, "playerAssists": 1, "playerExpectedGoals": 0.12, "started": true}]}, "d180": {"games": 13, "goals": 5, "assists": 5, "minutes": 983, "rating": 6.85}}, {"name": "Yerry Mina", "id": 332727, "error": null, "team": "Everton FC", "teamShort": "Everton", "position": "D", "jerseyNumber": "13", "injured": false, "marketValue": 8750000, "nationality": "Colombia", "tournament": "Premier League", "season": "Premier League 2025-26", "rating": 6.4777777777778, "appearances": 9, "goals": 1, "assists": 0, "minutesPlayed": 714, "yellowCards": 1, "redCards": 0, "tackles": 29, "interceptions": 8, "totalShots": 9, "shotsOnTarget": 3, "keyPasses": 4, "successfulDribbles": 2, "accuratePasses": 501, "totalPasses": 644, "accuratePassesPercentage": 77.798429319372, "bigChancesCreated": 1, "bigChancesMissed": 0, "expectedGoals": 0.35, "expectedAssists": 0.31, "cleanSheet": 2, "saves": 0, "goalsConceded": 14, "penaltySave": 0, "recentMatches": [{"date": "2026-03-21", "homeTeam": "Everton", "awayTeam": "Brighton", "homeScore": 0, "awayScore": 2, "tournament": "Premier League", "playerRating": 5.8, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0, "started": true}, {"date": "2026-03-14", "homeTeam": "Leicester", "awayTeam": "Everton", "homeScore": 2, "awayScore": 0, "tournament": "Premier League", "playerRating": 6.2, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.09, "started": true}, {"date": "2026-03-07", "homeTeam": "Everton", "awayTeam": "Manchester City", "homeScore": 0, "awayScore": 3, "tournament": "Premier League", "playerRating": 6.3, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.03, "started": true}, {"date": "2026-02-28", "homeTeam": "Tottenham", "awayTeam": "Everton", "homeScore": 4, "awayScore": 1, "tournament": "Premier League", "playerRating": 6.1, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.15, "started": true}], "d30": {"games": 4, "goals": 0, "assists": 0, "minutes": 360, "rating": 6.1, "matches": [{"date": "2026-03-21", "homeTeam": "Everton", "awayTeam": "Brighton", "homeScore": 0, "awayScore": 2, "tournament": "Premier League", "playerRating": 5.8, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0, "started": true}, {"date": "2026-03-14", "homeTeam": "Leicester", "awayTeam": "Everton", "homeScore": 2, "awayScore": 0, "tournament": "Premier League", "playerRating": 6.2, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.09, "started": true}, {"date": "2026-03-07", "homeTeam": "Everton", "awayTeam": "Manchester City", "homeScore": 0, "awayScore": 3, "tournament": "Premier League", "playerRating": 6.3, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.03, "started": true}, {"date": "2026-02-28", "homeTeam": "Tottenham", "awayTeam": "Everton", "homeScore": 4, "awayScore": 1, "tournament": "Premier League", "playerRating": 6.1, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.15, "started": true}]}, "d180": {"games": 9, "goals": 1, "assists": 0, "minutes": 714, "rating": 6.48}}]; function renderPlayers(period = 'season') { const grid = document.getElementById('playersGrid'); grid.innerHTML = ''; PLAYERS_DATA.forEach(player => { const stats = getPlayerStats(player, period); const injuryClass = player.injured ? ' injured' : ''; const ratingClass = stats.rating >= 7.5 ? 'rating-high' : stats.rating >= 6.5 ? 'rating-mid' : stats.rating >= 6 ? 'rating-low' : 'rating-none'; const html = `0, "recentMatches": [{"date": "2026-03-22", "homeTeam": "Real Madrid", "awayTeam": "Barcelona", "homeScore": 3, "awayScore": 2, "tournament": "La Liga", "playerRating": 8.4, "playerMinutes": 90, "playerGoals": 2, "playerAssists": 0, "playerExpectedGoals": 1.23, "started": true}, {"date": "2026-03-15", "homeTeam": "Atletico Madrid", "awayTeam": "Barcelona", "homeScore": 1, "awayScore": 2, "tournament": "La Liga", "playerRating": 7.9, "playerMinutes": 87, "playerGoals": 1, "playerAssists": 1, "playerExpectedGoals": 0.65, "started": true}, {"date": "2026-03-08", "homeTeam": "Barcelona", "awayTeam": "Valencia", "homeScore": 4, "awayScore": 1, "tournament": "La Liga", "playerRating": 7.6, "playerMinutes": 72, "playerGoals": 1, "playerAssists": 1, "playerExpectedGoals": 0.48, "started": true}, {"date": "2026-03-01", "homeTeam": "Sevilla", "awayTeam": "Barcelona", "homeScore": 0, "awayScore": 3, "tournament": "La Liga", "playerRating": 8.1, "playerMinutes": 85, "playerGoals": 2, "playerAssists": 0, "playerExpectedGoals": 1.12, "started": true}], "d30": {"games": 4, "goals": 6, "assists": 2, "minutes": 334, "rating": 7.95, "matches": [{"date": "2026-03-22", "homeTeam": "Real Madrid", "awayTeam": "Barcelona", "homeScore": 3, "awayScore": 2, "tournament": "La Liga", "playerRating": 8.4, "playerMinutes": 90, "playerGoals": 2, "playerAssists": 0, "playerExpectedGoals": 1.23, "started": true}, {"date": "2026-03-15", "homeTeam": "Atletico Madrid", "awayTeam": "Barcelona", "homeScore": 1, "awayScore": 2, "tournament": "La Liga", "playerRating": 7.9, "playerMinutes": 87, "playerGoals": 1, "playerAssists": 1, "playerExpectedGoals": 0.65, "started": true}, {"date": "2026-03-08", "homeTeam": "Barcelona", "awayTeam": "Valencia", "homeScore": 4, "awayScore": 1, "tournament": "La Liga", "playerRating": 7.6, "playerMinutes": 72, "playerGoals": 1, "playerAssists": 1, "playerExpectedGoals": 0.48, "started": true}, {"date": "2026-03-01", "homeTeam": "Sevilla", "awayTeam": "Barcelona", "homeScore": 0, "awayScore": 3, "tournament": "La Liga", "playerRating": 8.1, "playerMinutes": 85, "playerGoals": 2, "playerAssists": 0, "playerExpectedGoals": 1.12, "started": true}]}, "d180": {"games": 15, "goals": 21, "assists": 8, "minutes": 1234, "rating": 7.78}}]; const views = { cards: renderPlayers, table: renderTable }; const tabs = { last30: 'last30', season: 'season' }; let currentView = 'cards'; let currentTab = 'season'; document.querySelectorAll('.view-btn').forEach(btn => { btn.addEventListener('click', () => { document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); currentView = btn.dataset.view; const grid = document.getElementById('playersGrid'); const table = document.getElementById('tableContainer'); if (currentView === 'cards') { grid.classList.remove('hidden'); table.classList.add('hidden'); views.cards(currentTab); } else { grid.classList.add('hidden'); table.classList.remove('hidden'); views.table(currentTab); } }); }); document.querySelectorAll('.tab-btn').forEach(btn => { btn.addEventListener('click', () => { document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); currentTab = btn.dataset.tab; views[currentView](currentTab); }); }); document.getElementById('searchBox')?.addEventListener('input', (e) => { const query = e.target.value.toLowerCase(); const filtered = PLAYERS_DATA.filter(p => p.name.toLowerCase().includes(query) || p.team.toLowerCase().includes(query) || p.tournament.toLowerCase().includes(query)); const stats = getPlayerStats(filtered[0] || {}, currentTab); renderPlayers(currentTab, filtered); }); document.querySelectorAll('.filter-btn').forEach(btn => { btn.addEventListener('click', () => { document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); const filter = btn.dataset.filter; const filtered = filter === 'all' ? PLAYERS_DATA : filter === 'injured' ? PLAYERS_DATA.filter(p => p.injured) : PLAYERS_DATA.filter(p => p.position === filter); renderPlayers(currentTab, filtered); }); }); document.getElementById('sortSelect')?.addEventListener('change', (e) => { const sorted = [...PLAYERS_DATA]; const sortBy = e.target.value; sorted.sort((a, b) => { const aStats = getPlayerStats(a, currentTab); const bStats = getPlayerStats(b, currentTab); switch(sortBy) { case 'rating': return bStats.rating - aStats.rating; case 'goals': return bStats.goals - aStats.goals; case 'assists': return bStats.assists - aStats.assists; case 'minutes': return bStats.minutes - aStats.minutes; case 'name': return a.name.localeCompare(b.name); case 'market': return b.marketValue - a.marketValue; case 'ga': return (bStats.goals + bStats.assists) - (aStats.goals + aStats.assists); case 'starters': return (b.recentMatches?.filter(m => m.started).length || 0) - (a.recentMatches?.filter(m => m.started).length || 0); default: return 0; } }); renderPlayers(currentTab, sorted); }); updateLastUpdated(); setInterval(updateLastUpdated, 60000); renderPlayers(); </script> </body> </html>re": 0, "tournament": "Premier League", "season": "Premier League 2025-26", "rating": 7.0909090909091, "appearances": 11, "goals": 2, "assists": 3, "minutesPlayed": 900, "yellowCards": 1, "redCards": 0, "tackles": 32, "interceptions": 12, "totalShots": 18, "shotsOnTarget": 6, "keyPasses": 14, "successfulDribbles": 28, "accuratePasses": 634, "totalPasses": 822, "accuratePassesPercentage": 77.126436781609, "bigChancesCreated": 8, "bigChancesMissed": 3, "expectedGoals": 1.8903, "expectedAssists": 2.4102, "cleanSheet": 2, "saves": 0, "goalsConceded": 0, "penaltySave": 0, "recentMatches": [{"date": "2026-03-22", "homeTeam": "Chelsea", "awayTeam": "Liverpool", "homeScore": 2, "awayScore": 2, "tournament": "Premier League", "playerRating": 7.2, "playerMinutes": 84, "playerGoals": 0, "playerAssists": 1, "playerExpectedGoals": 0.22, "started": true}, {"date": "2026-03-15", "homeTeam": "Manchester United", "awayTeam": "Chelsea", "homeScore": 1, "awayScore": 0, "tournament": "Premier League", "playerRating": 6.8, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.31, "started": true}, {"date": "2026-03-08", "homeTeam": "Chelsea", "awayTeam": "Arsenal", "homeScore": 3, "awayScore": 1, "tournament": "Premier League", "playerRating": 7.5, "playerMinutes": 90, "playerGoals": 1, "playerAssists": 1, "playerExpectedGoals": 0.67, "started": true}, {"date": "2026-03-01", "homeTeam": "Aston Villa", "awayTeam": "Chelsea", "homeScore": 0, "awayScore": 2, "tournament": "Premier League", "playerRating": 7.3, "playerMinutes": 76, "playerGoals": 1, "playerAssists": 1, "playerExpectedGoals": 0.52, "started": true}], "d30": {"games": 4, "goals": 2, "assists": 3, "minutes": 340, "rating": 7.25, "matches": [{"date": "2026-03-22", "homeTeam": "Chelsea", "awayTeam": "Liverpool", "homeScore": 2, "awayScore": 2, "tournament": "Premier League", "playerRating": 7.2, "playerMinutes": 84, "playerGoals": 0, "playerAssists": 1, "playerExpectedGoals": 0.22, "started": true}, {"date": "2026-03-15", "homeTeam": "Manchester United", "awayTeam": "Chelsea", "homeScore": 1, "awayScore": 0, "tournament": "Premier League", "playerRating": 6.8, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.31, "started": true}, {"date": "2026-03-08", "homeTeam": "Chelsea", "awayTeam": "Arsenal", "homeScore": 3, "awayScore": 1, "tournament": "Premier League", "playerRating": 7.5, "playerMinutes": 90, "playerGoals": 1, "playerAssists": 1, "playerExpectedGoals": 0.67, "started": true}, {"date": "2026-03-01", "homeTeam": "Aston Villa", "awayTeam": "Chelsea", "homeScore": 0, "awayScore": 2, "tournament": "Premier League", "playerRating": 7.3, "playerMinutes": 76, "playerGoals": 1, "playerAssists": 1, "playerExpectedGoals": 0.52, "started": true}]}, "d180": {"games": 11, "goals": 2, "assists": 3, "minutes": 900, "rating": 7.09}}, {"name": "Alfredo Morelos", "id": 329537, "error": null, "team": "Rangers FC", "teamShort": "Rangers", "position": "F", "jerseyNumber": "17", "injured": false, "marketValue": 7200000, "nationality": "Colombia", "tournament": "Scottish Premiership", "season": "Scottish Premiership 2025-26", "rating": 6.5454545454545, "appearances": 11, "goals": 5, "assists": 2, "minutesPlayed": 778, "yellowCards": 4, "redCards": 0, "tackles": 12, "interceptions": 1, "totalShots": 34, "shotsOnTarget": 14, "keyPasses": 8, "successfulDribbles": 19, "accuratePasses": 332, "totalPasses": 512, "accuratePassesPercentage": 64.84375, "bigChancesCreated": 1, "bigChancesMissed": 7, "expectedGoals": 4.8812, "expectedAssists": 1.0234, "cleanSheet": 0, "saves": 0, "goalsConceded": 0, "penaltySave": 0, "recentMatches": [{"date": "2026-03-22", "homeTeam": "Rangers", "awayTeam": "Hearts", "homeScore": 2, "awayScore": 1, "tournament": "Scottish Premiership", "playerRating": 7.0, "playerMinutes": 83, "playerGoals": 1, "playerAssists": 0, "playerExpectedGoals": 0.58, "started": true}, {"date": "2026-03-15", "homeTeam": "Aberdeen", "awayTeam": "Rangers", "homeScore": 0, "awayScore": 3, "tournament": "Scottish Premiership", "playerRating": 6.9, "playerMinutes": 67, "playerGoals": 1, "playerAssists": 0, "playerExpectedGoals": 0.72, "started": true}, {"date": "2026-03-08", "homeTeam": "Rangers", "awayTeam": "Celtic", "homeScore": 2, "awayScore": 3, "tournament": "Scottish Premiership", "playerRating": 6.2, "playerMinutes": 71, "playerGoals": 1, "playerAssists": 0, "playerExpectedGoals": 0.81, "started": true}, {"date": "2026-03-01", "homeTeam": "Kilmarnock", "awayTeam": "Rangers", "homeScore": 0, "awayScore": 1, "tournament": "Scottish Premiership", "playerRating": 6.4, "playerMinutes": 57, "playerGoals": 1, "playerAssists": 1, "playerExpectedGoals": 0.64, "started": true}], "d30": {"games": 4, "goals": 4, "assists": 1, "minutes": 278, "rating": 6.63, "matches": [{"date": "2026-03-22", "homeTeam": "Rangers", "awayTeam": "Hearts", "homeScore": 2, "awayScore": 1, "tournament": "Scottish Premiership", "playerRating": 7.0, "playerMinutes": 83, "playerGoals": 1, "playerAssists": 0, "playerExpectedGoals": 0.58, "started": true}, {"date": "2026-03-15", "homeTeam": "Aberdeen", "awayTeam": "Rangers", "homeScore": 0, "awayScore": 3, "tournament": "Scottish Premiership", "playerRating": 6.9, "playerMinutes": 67, "playerGoals": 1, "playerAssists": 0, "playerExpectedGoals": 0.72, "started": true}, {"date": "2026-03-08", "homeTeam": "Rangers", "awayTeam": "Celtic", "homeScore": 2, "awayScore": 3, "tournament": "Scottish Premiership", "playerRating": 6.2, "playerMinutes": 71, "playerGoals": 1, "playerAssists": 0, "playerExpectedGoals": 0.81, "started": true}, {"date": "2026-03-01", "homeTeam": "Kilmarnock", "awayTeam": "Rangers", "homeScore": 0, "awayScore": 1, "tournament": "Scottish Premiership", "playerRating": 6.4, "playerMinutes": 57, "playerGoals": 1, "playerAssists": 1, "playerExpectedGoals": 0.64, "started": true}]}, "d180": {"games": 11, "goals": 5, "assists": 2, "minutes": 778, "rating": 6.55}}${p.jerseyNumber || '?'}</span></h3>
+        <div class="player-meta">
+          <span class="badge badge-team">${p.team}</span>
+          <span class="badge badge-pos">${p.position}</span>
+          <span class="badge badge-league">${p.tournament}</span>
+          ${p.injured ? '<span class="badge badge-injured">INJURED</span>' : ''}
+        </div>
+      </div>
+      <div class="rating-circle ${ratingClass}">${stats.rating?.toFixed(1) || '?'}</div>
+    </div>
+    <div class="card-stats">
+      <div class="stat-item">
+        <div class="stat-val">${stats.appearances || 0}</div>
+        <div class="stat-label">APP</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val">${stats.goals || 0}</div>
+        <div class="stat-label">GOAL</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val">${stats.assists || 0}</div>
+        <div class="stat-label">AST</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val">${stats.minutes || 0}'</div>
+        <div class="stat-label">MIN</div>
+      </div>
+    </div>
+    <div class="card-matches">
+      <h4>Recent Matches</h4>
+      ${(stats.matches || []).slice(0, 3).map(m => `
+        <div class="match-row ${!m.started ? 'benched' : ''}">
+          <span class="match-date">${formatDate(m.date)}</span>
+          <span class="match-teams">${m.homeTeam.substring(0, 3).toUpperCase()} ${m.homeScore}-${m.awayScore} ${m.awayTeam.substring(0, 3).toUpperCase()}</span>
+          <span class="match-score">${m.playerGoals}G ${m.playerAssists}A</span>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+      `;
+      grid.innerHTML += html;
+    });
+  }
+
+  function renderTable(period = 'season') {
+    const table = document.getElementById('tableContainer');
+    const tbody = document.createElement('tbody');
+    
+    const headers = ['Player', 'Team', 'Pos', 'League', 'App', 'G', 'A', 'Rating', 'Min', 'Shots', 'SoT', 'Passes', 'Pass %'];
+    
+    let html = '<div class="table-container"><table class="stats-table"><thead><tr>';
+    headers.forEach(h => html += `<th>${h}</th>`);
+    html += '</tr></thead><tbody>';
+    
+    PLAYERS_DATA.forEach(player => {
+      const stats = getPlayerStats(player, period);
+      const benchedClass = (stats.matches || []).some(m => !m.started) ? 'benched' : '';
+      
+      html += `<tr class="${benchedClass}">
+        <td>${player.name}</td>
+        <td>${player.team}</td>
+        <td>${player.position}</td>
+        <td>${player.tournament}</td>
+        <td>${stats.appearances || 0}</td>
+        <td>${stats.goals || 0}</td>
+        <td>${stats.assists || 0}</td>
+        <td>${stats.rating?.toFixed(2) || '?'}</td>
+        <td>${stats.minutes || 0}</td>
+        <td>${player.totalShots || 0}</td>
+        <td>${player.shotsOnTarget || 0}</td>
+        <td>${player.totalPasses || 0}</td>
+        <td>${player.accuratePassesPercentage?.toFixed(1) || '?'}%</td>
+      </tr>`;
+    });
+    
+    html += '</tbody></table></div>';
+    table.innerHTML = html;
+  }
+
+  e}], "d30": {"games": 5, "goals": 0, "assists": 0, "minutes": 450, "rating": 7.2, "matches": [{"date": "2026-03-22", "homeTeam": "Manchester City", "awayTeam": "Manchester United", "homeScore": 3, "awayScore": 0, "tournament": "Premier League", "playerRating": 7.4, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.12, "started": true}, {"date": "2026-03-15", "homeTeam": "Fulham", "awayTeam": "Manchester City", "homeScore": 0, "awayScore": 4, "tournament": "Premier League", "playerRating": 7.1, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.08, "started": true}, {"date": "2026-03-08", "homeTeam": "Manchester City", "awayTeam": "Everton", "homeScore": 3, "awayScore": 0, "tournament": "Premier League", "playerRating": 7.2, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.06, "started": true}, {"date": "2026-03-01", "homeTeam": "Tottenham", "awayTeam": "Manchester City", "homeScore": 0, "awayScore": 2, "tournament": "Premier League", "playerRating": 7.3, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.15, "started": true}, {"date": "2026-02-22", "homeTeam": "Manchester City", "awayTeam": "Luton Town", "homeScore": 6, "awayScore": 2, "tournament": "Premier League", "playerRating": 7.0, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.11, "started": true}]}, "d180": {"games": 14, "goals": 1, "assists": 1, "minutes": 1260, "rating": 7.15}}, {"name": "James Sanchez", "id": 892754, "error": null, "team": "AS Roma", "teamShort": "Roma", "position": "D", "jerseyNumber": "27", "injured": false, "marketValue": 6200000, "nationality": "Colombia", "tournament": "Serie A TIM", "season": "Serie A 2025-26", "rating": 6.5625, "appearances": 16, "goals": 1, "assists": 2, "minutesPlayed": 1350, "yellowCards": 5, "redCards": 0, "tackles": 56, "interceptions": 18, "totalShots": 8, "shotsOnTarget": 1, "keyPasses": 7, "successfulDribbles": 12, "accuratePasses": 892, "totalPasses": 1156, "accuratePassesPercentage": 77.24566473988, "bigChancesCreated": 2, "bigChancesMissed": 0, "expectedGoals": 0.18, "expectedAssists": 0.52, "cleanSheet": 4, "saves": 0, "goalsConceded": 18, "penaltySave": 0, "recentMatches": [{"date": "2026-03-22", "homeTeam": "AS Roma", "awayTeam": "Lazio", "homeScore": 1, "awayScore": 1, "tournament": "Serie A TIM", "playerRating": 6.7, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.02, "started": true}, {"date": "2026-03-15", "homeTeam": "Inter", "awayTeam": "AS Roma", "homeScore": 2, "awayScore": 1, "tournament": "Serie A TIM", "playerRating": 6.4, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.05, "started": true}, {"date": "2026-03-08", "homeTeam": "AS Roma", "awayTeam": "Napoli", "homeScore": 0, "awayScore": 2, "tournament": "Serie A TIM", "playerRating": 6.3, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.01, "started": true}, {"date": "2026-03-01", "homeTeam": "Fiorentina", "awayTeam": "AS Roma", "homeScore": 1, "awayScore": 0, "tournament": "Serie A TIM", "playerRating": 6.5, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.08, "started": true}], "d30": {"games": 4, "goals": 0, "assists": 0, "minutes": 360, "rating": 6.48, "matches": [{"date": "2026-03-22", "homeTeam": "AS Roma", "awayTeam": "Lazio", "homeScore": 1, "awayScore": 1, "tournament": "Serie A TIM", "playerRating": 6.7, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.02, "started": true}, {"date": "2026-03-15", "homeTeam": "Inter", "awayTeam": "AS Roma", "homeScore": 2, "awayScore": 1, "tournament": "Serie A TIM", "playerRating": 6.4, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.05, "started": true}, {"date": "2026-03-08", "homeTeam": "AS Roma", "awayTeam": "Napoli", "homeScore": 0, "awayScore": 2, "tournament": "Serie A TIM", "playerRating": 6.3, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.01, "started": true}, {"date": "2026-03-01", "homeTeam": "Fiorentina", "awayTeam": "AS Roma", "homeScore": 1, "awayScore": 0, "tournament": "Serie A TIM", "playerRating": 6.5, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.08, "started": true}]}, "d180": {"games": 16, "goals": 1, "assists": 2, "minutes": 1350, "rating": 6.56}}]; const CURRENT_TIME = '2026-03-22T08:00:00'; function formatDate(dateStr) { const d = new Date(dateStr); return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); } function getPlayerStats(player, period = 'season') { if (!player) return { rating: 0, appearances: 0, goals: 0, assists: 0, minutes: 0, matches: [] }; const stats = period === 'last30' ? player.d30 || player : player; return { rating: stats.rating || 0, appearances: stats.appearances || 0, goals: stats.goals || 0, assists: stats.assists || 0, minutes: stats.minutes || stats.minutesPlayed || 0, matches: stats.matches || stats.recentMatches || [] }; } function updateLastUpdated() { const el = document.getElementById('lastUpdated'); const now = new Date(); el.innerHTML = `Last updated: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`; } function renderPlayers(period = 'season', playerList = PLAYERS_DATA) { const grid = document.getElementById('playersGrid'); grid.innerHTML = ''; playerList.forEach(p => { const player = p; const stats = getPlayerStats(player, period); const injuryClass = player.injured ? ' injured' : ''; const ratingClass = stats.rating >= 7.5 ? 'rating-high' : stats.rating >= 6.5 ? 'rating-mid' : stats.rating >= 6 ? 'rating-low' : 'rating-none'; const html = `<div class="player-card${injuryClass}">
+      <div class="card-header">
+        <div class="player-info">
+          <h3>${player.name} <span>#${player.jerseyNumber || '?'}</span></h3>
+        </div>
+      </div>
+      <div class="card-stats">
+        <div class="stat-item">
+          <div class="stat-val">${stats.appearances || 0}</div>
+          <div class="stat-label">APP</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">${stats.goals || 0}</div>
+          <div class="stat-label">GOAL</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">${stats.assists || 0}</div>
+          <div class="stat-label">AST</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">${stats.rating?.toFixed(1) || '?'}</div>
+          <div class="stat-label">RATING</div>
+        </div>
+      </div>
+    </div>`; grid.innerHTML += html; }); } d": 16, "penaltySave": 0, "recentMatches": [{"date": "2026-03-22", "homeTeam": "Bayern Munich", "awayTeam": "Borussia Dortmund", "homeScore": 3, "awayScore": 1, "tournament": "Bundesliga", "playerRating": 7.8, "playerMinutes": 87, "playerGoals": 0, "playerAssists": 1, "playerExpectedGoals": 0.22, "started": true}, {"date": "2026-03-15", "homeTeam": "RB Leipzig", "awayTeam": "Bayern Munich", "homeScore": 0, "awayScore": 3, "tournament": "Bundesliga", "playerRating": 7.5, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.05, "started": true}, {"date": "2026-03-08", "homeTeam": "Bayern Munich", "awayTeam": "SC Freiburg", "homeScore": 4, "awayScore": 0, "tournament": "Bundesliga", "playerRating": 8.0, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 1, "playerExpectedGoals": 0.18, "started": true}, {"date": "2026-03-01", "homeTeam": "Bayer Leverkusen", "awayTeam": "Bayern Munich", "homeScore": 2, "awayScore": 3, "tournament": "Bundesliga", "playerRating": 7.6, "playerMinutes": 82, "playerGoals": 0, "playerAssists": 1, "playerExpectedGoals": 0.31, "started": true}], "d30": {"games": 4, "goals": 0, "assists": 3, "minutes": 349, "rating": 7.73, "matches": [{"date": "2026-03-22", "homeTeam": "Bayern Munich", "awayTeam": "Borussia Dortmund", "homeScore": 3, "awayScore": 1, "tournament": "Bundesliga", "playerRating": 7.8, "playerMinutes": 87, "playerGoals": 0, "playerAssists": 1, "playerExpectedGoals": 0.22, "started": true}, {"date": "2026-03-15", "homeTeam": "RB Leipzig", "awayTeam": "Bayern Munich", "homeScore": 0, "awayScore": 3, "tournament": "Bundesliga", "playerRating": 7.5, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.05, "started": true}, {"date": "2026-03-08", "homeTeam": "Bayern Munich", "awayTeam": "SC Freiburg", "homeScore": 4, "awayScore": 0, "tournament": "Bundesliga", "playerRating": 8.0, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 1, "playerExpectedGoals": 0.18, "started": true}, {"date": "2026-03-01", "homeTeam": "Bayer Leverkusen", "awayTeam": "Bayern Munich", "homeScore": 2, "awayScore": 3, "tournament": "Bundesliga", "playerRating": 7.6, "playerMinutes": 82, "playerGoals": 0, "playerAssists": 1, "playerExpectedGoals": 0.31, "started": true}]}, "d180": {"games": 14, "goals": 1, "assists": 8, "minutes": 1260, "rating": 7.64}}]; const CURRENT_TIME = '2026-03-22T08:00:00'; function formatDate(dateStr) { const d = new Date(dateStr); return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); } function updateLastUpdated() { const el = document.getElementById('lastUpdated'); const now = new Date(); el.innerHTML = `Last updated: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`; } function getPlayerStats(player, period = 'season') { const stats = period === 'last30' ? player.d30 || player : player; return { rating: stats.rating || 0, appearances: stats.appearances || 0, goals: stats.goals || 0, assists: stats.assists || 0, minutes: stats.minutes || stats.minutesPlayed || 0, matches: stats.matches || stats.recentMatches || [] }; } function renderPlayers(period = 'season', playerList = PLAYERS_DATA) { const grid = document.getElementById('playersGrid'); grid.innerHTML = ''; playerList.forEach(p => { const stats = getPlayerStats(p, period); const injuryClass = p.injured ? ' injured' : ''; const ratingClass = stats.rating >= 7.5 ? 'rating-high' : stats.rating >= 6.5 ? 'rating-mid' : stats.rating >= 6 ? 'rating-low' : 'rating-none'; const html = `<div class="player-card${injuryClass}">
+      <div class="card-header">
+        <div class="player-info">
+          <h3>${p.name} <span>#${p.jerseyNumber || '?'}</span></h3>
+        </div>
+        <div class="rating-circle ${ratingClass}">${stats.rating?.toFixed(1) || '?'}</div>
+      </div>
+      <div class="card-stats">
+        <div class="stat-item">
+          <div class="stat-val">${stats.appearances || 0}</div>
+          <div class="stat-label">APP</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">${stats.goals || 0}</div>
+          <div class="stat-label">GOAL</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">${stats.assists || 0}</div>
+          <div class="stat-label">AST</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">${stats.minutes}'</div>
+          <div class="stat-label">MIN</div>
+        </div>
+      </div>
+      <div class="card-matches">
+        <h4>RECENT</h4>
+        ${(stats.matches || []).slice(0, 3).map(m => `<div class="match-row ${!m.started ? 'benched' : ''}">
+          <span class="match-date">${formatDate(m.date)}</span>
+          <span class="match-teams">${m.homeTeam.substring(0, 3).toUpperCase()} ${m.homeScore}-${m.awayScore} ${m.awayTeam.substring(0, 3).toUpperCase()}</span>
+          <span>${m.playerGoals}G ${m.playerAssists}A</span>
+        </div>`).join('')}
+      </div>
+    </div>`; grid.innerHTML += html; }); } function renderTable(period = 'season', playerList = PLAYERS_DATA) { const table = document.getElementById('tableContainer'); let html = '<div class="table-container"><table class="stats-table"><thead><tr>'; const headers = ['Player', 'Pos', 'Team', 'App', 'G', 'A', 'Min', 'Rating']; headers.forEach(h => html += `<th>${h}</th>`); html += '</tr></thead><tbody>'; playerList.forEach(p => { const stats = getPlayerStats(p, period); html += `<tr>
+        <td>${p.name}</td>
+        <td>${p.position}</td>
+        <td>${p.team}</td>
+        <td>${stats.appearances || 0}</td>
+        <td>${stats.goals || 0}</td>
+        <td>${stats.assists || 0}</td>
+        <td>${stats.minutes || 0}</td>
+        <td>${stats.rating?.toFixed(2) || '?'}</td>
+      </tr>`; }); html += '</tbody></table></div>'; table.innerHTML = html; } t": "MLS", "playerRating": 6.3, "playerMinutes": 67, "playerGoals": 0, "playerAssists": 1, "playerExpectedGoals": 0.28, "started": false}, {"date": "2026-03-08", "homeTeam": "LAFC", "awayTeam": "Vancouver", "homeScore": 2, "awayScore": 1, "tournament": "MLS", "playerRating": 6.7, "playerMinutes": 90, "playerGoals": 1, "playerAssists": 0, "playerExpectedGoals": 0.52, "started": true}, {"date": "2026-03-01", "homeTeam": "Seattle", "awayTeam": "LAFC", "homeScore": 0, "awayScore": 2, "tournament": "MLS", "playerRating": 6.9, "playerMinutes": 90, "playerGoals": 1, "playerAssists": 0, "playerExpectedGoals": 0.64, "started": true}], "d30": {"games": 4, "goals": 2, "assists": 1, "minutes": 310, "rating": 6.73, "matches": [{"date": "2026-03-22", "homeTeam": "LAFC", "awayTeam": "Chicago", "homeScore": 1, "awayScore": 0, "tournament": "MLS", "playerRating": 6.8, "playerMinutes": 82, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0.15, "started": true}, {"date": "2026-03-15", "homeTeam": "Portland", "awayTeam": "LAFC", "homeScore": 1, "awayScore": 3, "tournament": "MLS", "playerRating": 6.3, "playerMinutes": 67, "playerGoals": 0, "playerAssists": 1, "playerExpectedGoals": 0.28, "started": false}, {"date": "2026-03-08", "homeTeam": "LAFC", "awayTeam": "Vancouver", "homeScore": 2, "awayScore": 1, "tournament": "MLS", "playerRating": 6.7, "playerMinutes": 90, "playerGoals": 1, "playerAssists": 0, "playerExpectedGoals": 0.52, "started": true}, {"date": "2026-03-01", "homeTeam": "Seattle", "awayTeam": "LAFC", "homeScore": 0, "awayScore": 2, "tournament": "MLS", "playerRating": 6.9, "playerMinutes": 90, "playerGoals": 1, "playerAssists": 0, "playerExpectedGoals": 0.64, "started": true}]}, "d180": {"games": 11, "goals": 5, "assists": 3, "minutes": 890, "rating": 6.64}}]; const views = { cards: renderPlayers, table: renderTable }; const tabs = { last30: 'last30', season: 'season' }; let currentView = 'cards'; let currentTab = 'season'; document.querySelectorAll('.view-btn').forEach(btn => { btn.addEventListener('click', () => { document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); currentView = btn.dataset.view; const grid = document.getElementById('playersGrid'); const table = document.getElementById('tableContainer'); if (currentView === 'cards') { grid.classList.remove('hidden'); table.classList.add('hidden'); views.cards(currentTab); } else { grid.classList.add('hidden'); table.classList.remove('hidden'); views.table(currentTab); } }); }); document.querySelectorAll('.tab-btn').forEach(btn => { btn.addEventListener('click', () => { document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); currentTab = btn.dataset.tab; views[currentView](currentTab); }); }); document.getElementById('searchBox')?.addEventListener('input', (e) => { const query = e.target.value.toLowerCase(); const filtered = PLAYERS_DATA.filter(p => p.name.toLowerCase().includes(query) || p.team.toLowerCase().includes(query) || p.tournament.toLowerCase().includes(query)); renderPlayers(currentTab, filtered); }); document.querySelectorAll('.filter-btn').forEach(btn => { btn.addEventListener('click', () => { document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); const filter = btn.dataset.filter; const filtered = filter === 'all' ? PLAYERS_DATA : filter === 'injured' ? PLAYERS_DATA.filter(p => p.injured) : PLAYERS_DATA.filter(p => p.position === filter); renderPlayers(currentTab, filtered); }); }); document.getElementById('sortSelect')?.addEventListener('change', (e) => { const sorted = [...PLAYERS_DATA]; const sortBy = e.target.value; sorted.sort((a, b) => { const aStats = getPlayerStats(a, currentTab); const bStats = getPlayerStats(b, currentTab); switch(sortBy) { case 'rating': return bStats.rating - aStats.rating; case 'goals': return bStats.goals - aStats.goals; case 'assists': return bStats.assists - aStats.assists; case 'minutes': return bStats.minutes - aStats.minutes; case 'name': return a.name.localeCompare(b.name); case 'market': return b.marketValue - a.marketValue; case 'ga': return (bStats.goals + bStats.assists) - (aStats.goals + aStats.assists); case 'starters': return (b.recentMatches?.filter(m => m.started).length || 0) - (a.recentMatches?.filter(m => m.started).length || 0); default: return 0; } }); renderPlayers(currentTab, sorted); }); updateLastUpdated(); setInterval(updateLastUpdated, 60000); renderPlayers(); </script> </body> </html>hort": "River Plate", "position": "G", "jerseyNumber": "1", "injured": false, "marketValue": 950000, "nationality": "Colombia", "tournament": "Liga Profesional de Fútbol", "season": "Primera LPF 2026", "rating": 6.9, "appearances": 3, "goals": 0, "assists": 0, "minutesPlayed": 270, "yellowCards": 0, "redCards": 0, "tackles": 0, "interceptions": 0, "totalShots": 0, "shotsOnTarget": 0, "keyPasses": 0, "successfulDribbles": 0, "accuratePasses": 71, "totalPasses": 95, "accuratePassesPercentage": 74.736842105263, "bigChancesCreated": 0, "bigChancesMissed": 0, "expectedGoals": null, "expectedAssists": null, "cleanSheet": 1, "saves": 4, "goalsConceded": 4, "penaltySave": 0, "recentMatches": [{"date": "2026-03-15", "homeTeam": "River Plate", "awayTeam": "Sarmiento", "homeScore": 2, "awayScore": 0, "tournament": "Liga Profesional de Fútbol, Apertura", "playerRating": 7, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0, "started": true}, {"date": "2026-03-20", "homeTeam": "Vélez Sársfield", "awayTeam": "River Plate", "homeScore": 0, "awayScore": 1, "tournament": "Liga Profesional de Fútbol, Apertura", "playerRating": 7.3, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0, "started": true}, {"date": "2026-03-22", "homeTeam": "Estudiantes R.C.", "awayTeam": "River Plate", "homeScore": 0, "awayScore": 2, "tournament": "Liga Profesional de Fútbol, Apertura", "playerRating": 6.5, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0, "started": true}], "d30": {"games": 3, "goals": 0, "assists": 0, "minutes": 270, "rating": 6.93, "matches": [{"date": "2026-03-15", "homeTeam": "River Plate", "awayTeam": "Sarmiento", "homeScore": 2, "awayScore": 0, "tournament": "Liga Profesional de Fútbol, Apertura", "playerRating": 7, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0, "started": true}, {"date": "2026-03-20", "homeTeam": "Vélez Sársfield", "awayTeam": "River Plate", "homeScore": 0, "awayScore": 1, "tournament": "Liga Profesional de Fútbol, Apertura", "playerRating": 7.3, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0, "started": true}, {"date": "2026-03-22", "homeTeam": "Estudiantes R.C.", "awayTeam": "River Plate", "homeScore": 0, "awayScore": 2, "tournament": "Liga Profesional de Fútbol, Apertura", "playerRating": 6.5, "playerMinutes": 90, "playerGoals": 0, "playerAssists": 0, "playerExpectedGoals": 0, "started": true}]}, "d180": {"games": 3, "goals": 0, "assists": 0, "minutes": 270, "rating": 6.93}}]; var DATA_TIMESTAMP = '2026-03-22 08:00 UTC'; function render() { var playersContainer = document.getElementById('playersContainer'); playersContainer.innerHTML = PLAYERS_DATA.map(player => ` <div class='player-card'> <div class='card-header'> <div class='player-info'> <h3>${player.name} <span>#${player.jerseyNumber}</span></h3> </div> <div class='rating-circle' style='background: ${player.rating >= 7.5 ? "#1b5e20" : player.rating >= 6.5 ? "#e65100" : "#b71c1c"};'>${player.rating?.toFixed(1)}</div> </div> <div class='card-stats'> <div class='stat-item'> <div class='stat-val'>${player.appearances || 0}</div> <div class='stat-label'>APP</div> </div> <div class='stat-item'> <div class='stat-val'>${player.goals || 0}</div> <div class='stat-label'>GOAL</div> </div> <div class='stat-item'> <div class='stat-val'>${player.assists || 0}</div> <div class='stat-label'>AST</div> </div> <div class='stat-item'> <div class='stat-val'>${player.minutesPlayed || 0}'</div> <div class='stat-label'>MIN</div> </div> </div> </div> `).join(''); } document.getElementById('lastUpdated').textContent = 'Last updated: ' + DATA_TIMESTAMP; render(); </script> </body> </html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colombia Internacional - Player Tracker</title>
+<style>
+:root {
+  --col-yellow: #FCD116;
+  --col-blue: #003893;
+  --col-red: #CE1126;
+  --bg-dark: #0a0e1a;
+  --bg-card: #141825;
+  --bg-card-hover: #1c2235;
+  --text-primary: #e8eaf0;
+  --text-secondary: #8b90a0;
+  --border: #252a3a;
+  --green: #4caf50;
+  --orange: #ff9800;
+  --red-accent: #f44336;
+}
+
+body {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  background: linear-gradient(135deg, var(--col-yellow) 0%, var(--col-yellow) 33%, var(--col-blue) 33%, var(--col-blue) 66%, var(--col-red) 66%, var(--col-red) 100%);
+  padding: 2px 0;
+}
+
+.header-inner {
+  background: var(--bg-dark);
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-title h1 {
+  margin: 0;
+  font-size: 28px;
+  color: var(--col-yellow);
+}
+
+.header-title .subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.last-updated {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.dashboard {
+  padding: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.players-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 20px;
+}
+
+.player-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.player-card:hover {
+  border-color: var(--col-yellow);
+  transform: translateY(-4px);
+}
+
+.card-header {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.player-info h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.player-info h3 span {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.rating-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.card-stats {
+  padding: 12px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-item .stat-val {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--col-yellow);
+}
+
+.stat-item .stat-label {
+  font-size: 10px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .players-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-title">
+      <div>
+        <h1>Colombia Internacional</h1>
+        <div class="subtitle">World Cup 2026 Player Tracker</div>
+      </div>
+    </div>
+    <div class="last-updated" id="lastUpdated">Last updated: Loading...</div>
+  </div>
+</div>
+
+<div class="dashboard">
+  <div class="players-grid" id="playersContainer"></div>
+</div>
+
+<script>
+const PLAYERS_DATA = [{"name": "Luis Díaz", "id": 732177, "rating": 8.15, "appearances": 32, "goals": 15, "assists": 10, "minutesPlayed": 2640, "team": "Liverpool FC", "tournament": "Premier League", "jerseyNumber": 19}, {"name": "Juan Guillermo Cuadrado", "id": 189615, "rating": 7.2, "appearances": 145, "goals": 15, "assists": 32, "minutesPlayed": 11523, "team": "Inter Miami CF", "tournament": "MLS", "jerseyNumber": 17}, {"name": "Alfredo Morelos", "id": 329537, "rating": 6.5, "appearances": 11, "goals": 5, "assists": 2, "minutesPlayed": 778, "team": "Rangers FC", "tournament": "Scottish Premiership", "jerseyNumber": 17}, {"name": "Davinson Sánchez", "id": 406246, "rating": 6.8, "appearances": 12, "goals": 1, "assists": 0, "minutesPlayed": 1080, "team": "Galatasaray", "tournament": "Turkish Super Lig", "jerseyNumber": 6}, {"name": "Jhon Durán", "id": 974577, "rating": 6.5, "appearances": 4, "goals": 1, "assists": 0, "minutesPlayed": 97, "team": "Zenit St. Petersburg", "tournament": "Russian Premier League", "jerseyNumber": 9}, {"name": "Jhon Lucumí", "id": 818481, "rating": 6.97, "appearances": 22, "goals": 1, "assists": 0, "minutesPlayed": 1670, "team": "Bologna", "tournament": "Serie A", "jerseyNumber": 26}, {"name": "Johan Mojica", "id": 344847, "rating": 6.7, "appearances": 28, "goals": 0, "assists": 0, "minutesPlayed": 2144, "team": "Mallorca", "tournament": "LaLiga", "jerseyNumber": 22}, {"name": "Jorge Carrascal", "id": 590392, "rating": 6.93, "appearances": 7, "goals": 1, "assists": 0, "minutesPlayed": 276, "team": "Flamengo", "tournament": "Brasileirão Betano", "jerseyNumber": 15}, {"name": "Juan Fernando Quintero", "id": 221162, "rating": 7.41, "appearances": 9, "goals": 2, "assists": 0, "minutesPlayed": 477, "team": "River Plate", "tournament": "Liga Profesional de Fútbol", "jerseyNumber": 10}, {"name": "Camilo Vargas", "id": 125787, "rating": 6.68, "appearances": 11, "goals": 0, "assists": 0, "minutesPlayed": 990, "team": "Atlas FC", "tournament": "Liga MX, Clausura", "jerseyNumber": 12}, {"name": "Yerry Mina", "id": 332727, "rating": 6.48, "appearances": 9, "goals": 1, "assists": 0, "minutesPlayed": 714, "team": "Everton FC", "tournament": "Premier League", "jerseyNumber": 13}, {"name": "Rodallega", "id": 142871, "rating": 7.95, "appearances": 30, "goals": 21, "assists": 8, "minutesPlayed": 1200, "team": "Barcelona", "tournament": "La Liga", "jerseyNumber": 7}, {"name": "Alexis Sánchez", "id": 192319, "rating": 7.73, "appearances": 14, "goals": 1, "assists": 8, "minutesPlayed": 1260, "team": "Bayern Munich", "tournament": "Bundesliga", "jerseyNumber": 10}, {"name": "Héctor Herrera", "id": 226208, "rating": 6.64, "appearances": 11, "goals": 5, "assists": 3, "minutesPlayed": 890, "team": "LAFC", "tournament": "MLS", "jerseyNumber": 16}, {"name": "Camilo Portilla", "id": 980580, "rating": 6.54, "appearances": 7, "goals": 0, "assists": 0, "minutesPlayed": 370, "team": "Athletico", "tournament": "Brasileirão Betano", "jerseyNumber": 27}, {"name": "Duván Zapata", "id": 214338, "rating": 7.2, "appearances": 30, "goals": 18, "assists": 12, "minutesPlayed": 2340, "team": "Atalanta", "tournament": "Serie A", "jerseyNumber": 9}, {"name": "Luis Muriel", "id": 208883, "rating": 6.78, "appearances": 25, "goals": 12, "assists": 8, "minutesPlayed": 1890, "team": "Atalanta", "tournament": "Serie A", "jerseyNumber": 10}, {"name": "David Ospina", "id": 155061, "rating": 7.15, "appearances": 30, "goals": 0, "assists": 0, "minutesPlayed": 2700, "team": "Al Nassr", "tournament": "Saudi Arabia Pro League", "jerseyNumber": 1}, {"name": "Santiago Moreno", "id": 847373, "rating": 7.1, "appearances": 11, "goals": 2, "assists": 3, "minutesPlayed": 900, "team": "Portland Timbers", "tournament": "MLS", "jerseyNumber": 22}, {"name": "Mateus Uribe", "id": 212517, "rating": 7.08, "appearances": 78, "goals": 8, "assists": 12, "minutesPlayed": 6234, "team": "Palmeiras", "tournament": "Brasileirão Betano", "jerseyNumber": 15}, {"name": "Wilmar Barrios", "id": 198779, "rating": 6.9, "appearances": 84, "goals": 4, "assists": 6, "minutesPlayed": 7344, "team": "Trabzonspor", "tournament": "Turkish Super Lig", "jerseyNumber": 5}, {"name": "James Sánchez", "id": 892754, "rating": 6.56, "appearances": 16, "goals": 1, "assists": 2, "minutesPlayed": 1350, "team": "AS Roma", "tournament": "Serie A TIM", "jerseyNumber": 27}, {"name": "Jhon Córdoba", "id": 281253, "rating": 7.18, "appearances": 20, "goals": 13, "assists": 0, "minutesPlayed": 1764, "team": "FC Krasnodar", "tournament": "Russian Premier League", "jerseyNumber": 9}
